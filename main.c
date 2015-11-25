@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "main.h"
 
-void plot(int sizemat, int n,double *a,int *ja, int *ia){
+void plot(int sizemat, int n,double *x){
   int j,i,c,k;
   double **u;
   u = (double**) malloc(sizemat*sizeof(double*));
@@ -14,18 +14,13 @@ void plot(int sizemat, int n,double *a,int *ja, int *ia){
       u[i][c] = 0.0;
     }
   }
+  j =0;
   printf("ok1""\n");
-  for (i=0;i<sizemat;i++){
-    for (k=ia[i];k<ia[i+1];k++){
-      j = ja[k];
-      u[i][j] = a[k];
+  for (i=1;i<sizemat-1;i++){
+    for (k=1;k<sizemat-1;k++){
+      u[i][k] = x[j];
+      j = j+1;
     }
-  }
-  for (i = 0; i<sizemat;i++){
-    for (c = 0;c<sizemat;c++){
-      printf("%f""  ",u[i][c]);
-    }
-    printf("\n");
   }
   printf("ok2""\n");
   FILE *f = fopen("file.txt", "w+");
@@ -36,8 +31,7 @@ void plot(int sizemat, int n,double *a,int *ja, int *ia){
   }
   for (j = 0; j < sizemat; j++){
     for (i = 0; i < sizemat; i++){
-      fprintf(f,"%f"" ",u[i][j]);
-      printf("%f""\n",u[i][j]);
+      fprintf(f,"%f"" ",u[j][i]);
         }
       fprintf(f,"\n");
   }
@@ -47,10 +41,7 @@ void plot(int sizemat, int n,double *a,int *ja, int *ia){
      *     C program terminates.
      */
   FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
-  fprintf(gnuplotPipe, "%s \n", "splot 'file.txt' matrix nonuniform with lines t ''");
-  
-
-  
+  fprintf(gnuplotPipe, "%s \n", "splot 'file.txt' matrix with lines");
 }
 
 int main(int argc, char *argv[])
@@ -99,7 +90,7 @@ int main(int argc, char *argv[])
   residu = z/v;
   printf("%2.20Lf""\n",residu);
   
-  plot(n,nzz,a,ja,ia);
+  plot(nx,n,x);
   /* libérér la mémoire */
   free(ia); free(ja); free(a); free(b); free(x); free(y); free(b_y);
 return 0;
