@@ -5,6 +5,7 @@
 void plot(int sizemat, int n,double *x){
   int j,i,c,k;
   double **u;
+  char * commandsForGnuplot[] = {"set title \"graph solution\"","set pm3d", "splot 'file.txt' matrix with pm3d"};
   /*definting of u*/
   u = (double**) malloc(sizemat*sizeof(double*));
   for (i = 0; i < sizemat; i++){
@@ -44,13 +45,16 @@ void plot(int sizemat, int n,double *x){
      *     C program terminates.
      */
   FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
-  fprintf(gnuplotPipe, "%s \n", "splot 'file.txt' matrix with lines");
+   for (i=0; i < 3; i++)
+    {
+    fprintf(gnuplotPipe, "%s \n", commandsForGnuplot[i]); //Send commands to gnuplot one by one.
+    }
 }
 
 int main(int argc, char *argv[])
 {
   /* déclarer les variables */
-  int nx = 1000;
+  int nx = 200;
   int i,n,nzz,sym, *ia, *ja; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y;
   long double residu; 
@@ -63,10 +67,10 @@ int main(int argc, char *argv[])
   /*test si la mtrice est symétrique*/
   sym = issym(nzz,n,a,ja,ia);
   if (sym == 0){
-    printf("la matice a est symétrique""\n");
+    printf("la martice a est symétrique""\n");
   }
   else{  
-    printf("la matice a n'est pas symétrique""\n");
+    printf("la matrice a n'est pas symétrique""\n");
   }
   /* allouer la mémoire pour le vecteur de solution */
   x = malloc(n * sizeof(double));
