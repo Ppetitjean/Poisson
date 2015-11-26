@@ -5,6 +5,7 @@
 void plot(int sizemat, int n,double *x){
   int j,i,c,k;
   double **u;
+  /*definting of u*/
   u = (double**) malloc(sizemat*sizeof(double*));
   for (i = 0; i < sizemat; i++){
     u[i] = (double*) malloc(sizemat*sizeof(double));
@@ -14,15 +15,17 @@ void plot(int sizemat, int n,double *x){
       u[i][c] = 0.0;
     }
   }
-  j =0;
+  j =n-1;
   printf("ok1""\n");
+  /*changing value not on the frontier*/
   for (i=1;i<sizemat-1;i++){
     for (k=1;k<sizemat-1;k++){
       u[i][k] = x[j];
-      j = j+1;
+      j = j-1;
     }
   }
   printf("ok2""\n");
+  /*loading data in the file*/
   FILE *f = fopen("file.txt", "w+");
   if (f == NULL)
   {
