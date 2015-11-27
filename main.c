@@ -4,8 +4,13 @@
 
 void plot(int sizemat, int n,double *x){
   int j,i,c,k;
-  double **u;
-  char * commandsForGnuplot[] = {"set title \"graph solution\"","set pm3d", "splot 'file.txt' matrix with pm3d"};
+  double **u,nx,h;
+  nx = sizemat;
+  h = 1/(nx-1);
+  printf("%f ""\n",h);
+  char * commandsForGnuplot[] = {"set title \"graph solution\"","set size square","set pm3d map","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
+  char * commandsForGnuplot2[] = {"set title \"graph solution\"","set pm3d","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
+  
   /*definting of u*/
   u = (double**) malloc(sizemat*sizeof(double*));
   for (i = 0; i < sizemat; i++){
@@ -21,7 +26,7 @@ void plot(int sizemat, int n,double *x){
   /*changing value not on the frontier*/
   for (i=1;i<sizemat-1;i++){
     for (k=1;k<sizemat-1;k++){
-      u[i][k] = x[j];
+      u[i][k] = (h*h)*x[j];
       j = j-1;
     }
   }
@@ -45,19 +50,31 @@ void plot(int sizemat, int n,double *x){
      *     C program terminates.
      */
   FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
-   for (i=0; i < 3; i++)
+   for (i=0; i < 5; i++)
     {
     fprintf(gnuplotPipe, "%s \n", commandsForGnuplot[i]); //Send commands to gnuplot one by one.
     }
+  FILE * temp1 = fopen("data.temp", "w");
+    /*Opens an interface that one can use to send commands as if they were typing into the
+     *     gnuplot command line.  "The -persistent" keeps the plot open even after your
+     *     C program terminates.
+     */
+  FILE * gnuplotPipe2 = popen ("gnuplot -persistent", "w");
+    for (i=0; i < 4; i++)
+    {
+    fprintf(gnuplotPipe2, "%s \n", commandsForGnuplot2[i]); //Send commands to gnuplot one by one.
+    }
+    
+  
 }
 
 int main(int argc, char *argv[])
 {
   /* déclarer les variables */
-  int nx = 200;
+  int nx =10;
   int i,n,nzz,sym, *ia, *ja; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y;
-  long double residu; 
+  double residu; 
   double t1, t2;
 
   /* générér le problème */
@@ -95,9 +112,9 @@ int main(int argc, char *argv[])
   z = normvec2(n,b_y);
   v = normvec2(n,b);
   residu = z/v;
-  printf("%2.20Lf""\n",residu);
-  
-  plot(nx,n,x);
+  printf("%e""\n",residu);
+//   plot(nx,n,x);
+  CtoF(n,nzz,a,ja,ia,b);
   /* libérér la mémoire */
   free(ia); free(ja); free(a); free(b); free(x); free(y); free(b_y);
 return 0;

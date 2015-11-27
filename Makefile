@@ -17,9 +17,9 @@ clean:
 	rm *.o 
 	rm main
 
-main: main.c prob.o time.o  umfpack.o issym.o normvec2.o amux.o vect_vect.o 
+main: main.c prob.o time.o  umfpack.o issym.o normvec2.o amux.o vect_vect.o CtoF.o
 	cc $(COPT) $^ -o $@ $(LIB)
-
+	
 umfpack.o: umfpack.c
 	cc $(COPT) -c $< -o $@ -ISuiteSparse/UMFPACK/Include \
   -ISuiteSparse/SuiteSparse_config  -ISuiteSparse/AMD/Include

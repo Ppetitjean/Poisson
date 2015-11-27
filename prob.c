@@ -62,6 +62,7 @@ int prob(int nx, int *n, int **ia, int **ja, double **a, double **b)
     for (iy = 0; iy < nx; iy++) {
         for (ix = 0; ix < nx; ix++) {
             /* numéro de l'éauqtion */
+	    /*double h = 1/(nx-1);*/
             ind = ix + nx * iy;
 
             /* marquer le début de la ligne suivante dans le tableau 'ia' */
