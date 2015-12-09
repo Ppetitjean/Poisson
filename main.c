@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
   v = normvec2(n,b);
   residu = z/v;
   printf("%e""\n",residu);
-//   plot(nx,n,x);
+  plot(nx,n,x);
   CtoF(n,nzz,a,ja,ia,b);
   /* libérér la mémoire */
   free(ia); free(ja); free(a); free(b); free(x); free(y); free(b_y);

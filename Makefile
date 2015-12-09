@@ -24,6 +24,9 @@ umfpack.o: umfpack.c
 	cc $(COPT) -c $< -o $@ -ISuiteSparse/UMFPACK/Include \
   -ISuiteSparse/SuiteSparse_config  -ISuiteSparse/AMD/Include
 
+CtoF.o: CtoF.c
+	cc $(COPT) -c $< -o $@  -ldxml
+
 %.o: %.c
 	cc $(COPT) -c $< -o $@
 
