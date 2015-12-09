@@ -65,7 +65,7 @@ int solve_umfpack(int n, int *ja, int *ia, double *a,
     (void) umfpack_di_report_numeric (Numeric, Control) ;
 
    /* solution */
-   status = umfpack_di_solve (UMFPACK_A, ja, ia, a, x, b, Numeric, Control, Info) ;
+    status = umfpack_di_solve (UMFPACK_A, ja, ia, a, x, b, Numeric, Control, Info) ;
     umfpack_di_report_info (Control, Info) ;
     umfpack_di_report_status (Control, status) ;
     if (status < 0)

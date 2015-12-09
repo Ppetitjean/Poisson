@@ -2,8 +2,7 @@
 #include <stdlib.h>
 
 void printMat(int nbligne,int nbcol,double **x){
-  int j,i,c,k;
-  double **u;
+  int j,i;
   for (j = 0; j < nbligne; j++){
     for (i = 0; i < nbcol; i++){
       printf("%f"" ",x[j][i]);
@@ -11,6 +10,22 @@ void printMat(int nbligne,int nbcol,double **x){
       printf("\n");
   }
 }
+void saveMat(int nbligne,int nbcol,double **x){
+  int j,i;
+/*loading data in the file*/
+  FILE *f = fopen("mat.txt", "w+");
+  if (f == NULL)
+  {
+      printf("Error opening file!\n");
+      exit(1);
+  }
+  for (j = 0; j < nbligne; j++){
+    for (i = 0; i < nbcol; i++){
+      fprintf(f,"%f"" ",x[j][i]);
+        }
+      fprintf(f,"\n");
+  }
+  }
 
 void ACtoAF(int n,int nnz, double *a,int *ja,int *ia){
   int i,j;
@@ -25,44 +40,24 @@ void ACtoAF(int n,int nnz, double *a,int *ja,int *ia){
 void csrbnd (int n,double *a,int *ja,int *ia,double **abd,int kd){
 
 //  first determine ml and mu.
-  int i,k,j,x,l,z,nelf,neld,ndemi;
+  int i,k,j,x,l,z;
+  z = 0;
   for (i=0;i<n;i++){
-    printf("%i i ""\n",i);
-    l = ia[i+1]-ia[i];
-    printf("%i l ""\n",l);
-    z = 0;
-    ndemi= n/2;
-    neld = 0;
-    nelf = 0;
-    if(l == 5){
-      neld = 2;
-    }
-    if ((l == 4) && (i < (ndemi))){
-      neld = 1;
-    }
-    if ((l == 4) && (i > (ndemi))){
-      neld = 1;
-      nelf = 2;
-    }
-    if ((l == 3) && (i < (ndemi))){
-      neld = 1;
-    }
-    if ((l == 3) && (i > (ndemi))){
-      neld = 1;
-      nelf = 2;
-    }
+
     
-    for(k=ia[i]+neld;k<ia[i+1]-nelf;k++){
+    for(k=ia[i];k<ia[i+1];k++){
       j = ja[k];
-      x = i-j+kd-;
+      x = i-j;
+      if (i>=j){
       
-      printf("%i x ""\n",x);printf("%i j ""\n",j);printf("%i k ""\n",k);printf("%i i ""\n",i);
+      /*printf("%i z ""\n",z);printf("%i x ""\n",x);printf("%i j ""\n",j);*/
       fflush(stdout); 
       abd[x][j] = a[k];
-      z++;
+      z++;}
     }
   }
-  printMat(kd,n,abd);
+  printMat(kd+1,n,abd);
+  saveMat(kd+1,n,abd);
 }
 
 
@@ -73,10 +68,12 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   m1 = ia[0];
   m2 = ia[1];
   nabd = ja[m2-1]-ja[m1];
+  printf("%i ja[m2-1] ""\n",ja[m2-1] );
+  printf("%i ja[m1] ""\n",ja[m1] );
   printf("%i nabd ""\n",nabd );
   printf("%i n ""\n",n );
   abd = (double**) malloc((nabd+1)*sizeof(double*));
-  for (i = 0; i < n; i++){
+  for (i = 0; i <= nabd; i++){
     abd[i] = (double*) malloc(n*sizeof(double));
   }
   for (i = 0;i<nabd+1;i++){

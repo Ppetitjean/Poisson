@@ -37,9 +37,9 @@ int prob(int nx, int *n, int **ia, int **ja, double **a, double **b)
 
 */
 {
-    int  nnz, ix, iy, ind;
+    int  nnz, ix, iy, ind,h;
     double xx, yy;
-
+    h = 1/(nx-1);
     nx -= 2; /* noeuds sur la frontière Dirichlet ne sont pas pris en compte */
     *n  = nx * nx; /* nombre d'inconnues */
     nnz = 5 * nx * nx - 4 * nx; /* nombre d'éléments non nuls */

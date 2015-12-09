@@ -30,7 +30,6 @@ void plot(int sizemat, int n,double *x){
       j = j-1;
     }
   }
-  printf("ok2""\n");
   /*loading data in the file*/
   FILE *f = fopen("file.txt", "w+");
   if (f == NULL)
@@ -112,7 +111,7 @@ int main(int argc, char *argv[])
   z = normvec2(n,b_y);
   v = normvec2(n,b);
   residu = z/v;
-  printf("%e""\n",residu);
+  printf("%e residu ""\n",residu);
   plot(nx,n,x);
   CtoF(n,nzz,a,ja,ia,b);
   /* libérér la mémoire */
