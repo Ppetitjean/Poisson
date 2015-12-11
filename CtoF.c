@@ -25,6 +25,7 @@ void saveMat(int nbligne,int nbcol,double **x){
         }
       fprintf(f,"\n");
   }
+  fclose(f);
   }
 
 void ACtoAF(int n,int nnz, double *a,int *ja,int *ia){
@@ -56,7 +57,6 @@ void csrbnd (int n,double *a,int *ja,int *ia,double **abd,int kd){
       z++;}
     }
   }
-  printMat(kd+1,n,abd);
   saveMat(kd+1,n,abd);
 }
 
@@ -91,7 +91,7 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   job = 1;
   t1 = mytimer();
   printf("coucou""\n");
-  dpbsv_('U',n,nabd,1,abd,n,x,1);
+  extern dpbsv_('L',n,nabd,1,abd,nabd+1,x,&INFO);
   t2 = mytimer();
   printf("\nTemps de solution (CPU): %5.1f sec\n",t2-t1);
 }
