@@ -5,9 +5,9 @@ void printMat(int nbligne,int nbcol,double **x){
   int j,i;
   for (j = 0; j < nbligne; j++){
     for (i = 0; i < nbcol; i++){
-      printf("%f"" ",x[j][i]);
-        }
-      printf("\n");
+      printf("%f ",x[j][i]);
+    }
+    printf("\n");
   }
 }
 void saveMat(int nbligne,int nbcol,double **x){
@@ -21,12 +21,28 @@ void saveMat(int nbligne,int nbcol,double **x){
   }
   for (j = 0; j < nbligne; j++){
     for (i = 0; i < nbcol; i++){
-      fprintf(f,"%f"" ",x[j][i]);
+      fprintf(f,"%f ",x[j][i]);
         }
       fprintf(f,"\n");
   }
   fclose(f);
-  }
+}
+
+void saveMatLinear(int L, int C, double* x) {
+    int i,j;
+    FILE* f = fopen("mat.txt", "w+");
+    if(f == NULL) {
+        printf("Error opening file!\n");
+        exit(1);
+    }
+    for (j = 0; j < L; j++){
+        for (i = 0; i < C; i++){
+          fprintf(f, "%f ", x[j + i * C]);
+        }
+        fprintf(f,"\n");
+    }
+    fclose(f);
+}
 
 void ACtoAF(int n,int nnz, double *a,int *ja,int *ia){
   int i,j;
@@ -38,7 +54,7 @@ void ACtoAF(int n,int nnz, double *a,int *ja,int *ia){
   }
 }
 
-void csrbnd (int n,double *a,int *ja,int *ia,double **abd,int kd){
+void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
 
 //  first determine ml and mu.
   int i,k,j,x,l,z;
@@ -53,18 +69,17 @@ void csrbnd (int n,double *a,int *ja,int *ia,double **abd,int kd){
       
       /*printf("%i z ""\n",z);printf("%i x ""\n",x);printf("%i j ""\n",j);*/
       fflush(stdout); 
-      abd[x][j] = a[k];
+      abd[x + j*n] = a[k];
       z++;}
     }
   }
-  saveMat(kd+1,n,abd);
+  saveMatLinear(kd+1,n,abd);
 }
-
 
 void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double *sol,int issym)*/
 {
   int job,nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j;
-  double **abd,*sol,t1,t2;
+  double *abd,*sol,t1,t2;
   m1 = ia[0];
   m2 = ia[1];
   nabd = ja[m2-1]-ja[m1];
@@ -72,13 +87,10 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   printf("%i ja[m1] ""\n",ja[m1] );
   printf("%i nabd ""\n",nabd );
   printf("%i n ""\n",n );
-  abd = (double**) malloc((nabd+1)*sizeof(double*));
-  for (i = 0; i <= nabd; i++){
-    abd[i] = (double*) malloc(n*sizeof(double));
-  }
+  abd = malloc((nabd+1+n)*sizeof(double));
   for (i = 0;i<nabd+1;i++){
     for (j = 0;j<n;j++){
-      abd[i][j]= 0.0;
+      abd[i+j*n]= 0.0;
     }
   }
   printf("hello \n");
@@ -91,7 +103,7 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   job = 1;
   t1 = mytimer();
   printf("coucou""\n");
-  extern dpbsv_('L',n,nabd,1,abd,nabd+1,x,&INFO);
+  dpbsv_('L',n,nabd,1,abd,nabd+1,x,&INFO);
   t2 = mytimer();
   printf("\nTemps de solution (CPU): %5.1f sec\n",t2-t1);
 }
