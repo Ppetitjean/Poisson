@@ -35,9 +35,9 @@ void saveMatLinear(int L, int C, double* x) {
         printf("Error opening file!\n");
         exit(1);
     }
-    for (j = 0; j < L; j++){
-        for (i = 0; i < C; i++){
-          fprintf(f, "%f ", x[j + i * C]);
+    for (j = 0; j < C; j++){
+        for (i = 0; i < L; i++){
+          fprintf(f, "%f ", x[j * C+ i ]);
         }
         fprintf(f,"\n");
     }
@@ -69,7 +69,7 @@ void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
       
       /*printf("%i z ""\n",z);printf("%i x ""\n",x);printf("%i j ""\n",j);*/
       fflush(stdout); 
-      abd[x + j*n] = a[k];
+      abd[x*n+j] = a[k];
       z++;}
     }
   }
@@ -78,8 +78,11 @@ void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
 
 void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double *sol,int issym)*/
 {
-  int job,nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j;
+  int job,nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,l,lnabd;
   double *abd,*sol,t1,t2;
+  char uplo;
+  printf("salut \n");
+  fflush(stdout); 
   m1 = ia[0];
   m2 = ia[1];
   nabd = ja[m2-1]-ja[m1];
@@ -94,16 +97,16 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
     }
   }
   printf("hello \n");
-  
+  fflush(stdout); 
   
   printf("%i ""coucou"" \n",nabd);
   csrbnd(n,a,ja,ia,abd,nabd);
-  /*caculate nabd*/
   printf("coucou""\n");
   job = 1;
   t1 = mytimer();
+  lnabd = nabd + 1; l =1;uplo = 'L';
   printf("coucou""\n");
-  dpbsv_('L',n,nabd,1,abd,nabd+1,x,&INFO);
+  dpbsv_(&uplo,&n,&nabd,&l,abd,&lnabd,x,&INFO);
   t2 = mytimer();
   printf("\nTemps de solution (CPU): %5.1f sec\n",t2-t1);
 }
