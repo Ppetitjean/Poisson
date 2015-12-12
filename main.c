@@ -26,7 +26,7 @@ void plot(int sizemat, int n,double *x){
   /*changing value not on the frontier*/
   for (i=1;i<sizemat-1;i++){
     for (k=1;k<sizemat-1;k++){
-      u[i][k] = (h*h)*x[j];
+      u[i][k] = x[j];
       j = j-1;
     }
   }
@@ -70,7 +70,7 @@ void plot(int sizemat, int n,double *x){
 int main(int argc, char *argv[])
 {
   /* déclarer les variables */
-  int nx =10;
+  int nx =100;
   int i,n,nzz,sym, *ia, *ja; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y;
   double residu; 
@@ -112,10 +112,11 @@ int main(int argc, char *argv[])
   v = normvec2(n,b);
   residu = z/v;
   printf("%e residu ""\n",residu);
+  plot(nx,n,x);
   CtoF(n,nzz,a,ja,ia,b);
   plot(nx,n,b);
   /* libérér la mémoire */
-  
+  free(ia); free(ja); free(a); free(b); free(x); free(y); free(b_y);
 return 0;
 }
 

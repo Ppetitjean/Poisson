@@ -64,12 +64,12 @@ void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
     
     for(k=ia[i];k<ia[i+1];k++){
       j = ja[k];
-      x = i-j;
-      if (i>=j){
+      x = j-i;
+      if (j>=i){
       
       /*printf("%i z ""\n",z);printf("%i x ""\n",x);printf("%i j ""\n",j);*/
       fflush(stdout); 
-      abd[x+j*n] = a[k];
+      abd[(x+i)*(kd+1) + (kd-x)] = a[k];
       z++;}
     }
   }
@@ -89,12 +89,7 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   printf("%i ja[m1] ""\n",ja[m1] );
   printf("%i nabd ""\n",nabd );
   printf("%i n ""\n",n );
-  abd = malloc((nabd+1+n)*sizeof(double));
-  for (i = 0;i<nabd+1;i++){
-    for (j = 0;j<n;j++){
-      abd[i+j*n]= 0.0;
-    }
-  }
+  abd = calloc(((nabd+1)*n),sizeof(double));
   printf("hello \n");
   fflush(stdout); 
   
@@ -104,8 +99,8 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   printf("coucou""\n");
   fflush(stdout); 
   job = 1;
-  lnabd = nabd + 1; labd =1;uplo = 'L';lbdb = n;nrhs=1;
+  lnabd = nabd + 1; labd =1;uplo = 'U';lbdb = n;nrhs=1;
   printf("coucou""\n");
   dpbsv_(&uplo,&n,&nabd,&nrhs,abd,&lnabd,x,&lbdb,&INFO);
-  printf("%i \n",INFO);
+  printf("%i Info \n",INFO);
 }
