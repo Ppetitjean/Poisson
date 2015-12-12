@@ -70,11 +70,11 @@ void plot(int sizemat, int n,double *x){
 int main(int argc, char *argv[])
 {
   /* déclarer les variables */
-  int nx =100;
+  int nx =1000;
   int i,n,nzz,sym, *ia, *ja; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y;
   double residu; 
-  double t1, t2;
+  double t1, t2,t3,t4;
 
   /* générér le problème */
   nzz = prob(nx, &n, &ia, &ja, &a, &b);
@@ -113,7 +113,9 @@ int main(int argc, char *argv[])
   residu = z/v;
   printf("%e residu ""\n",residu);
   plot(nx,n,x);
+
   CtoF(n,nzz,a,ja,ia,b);
+  
   plot(nx,n,b);
   /* libérér la mémoire */
   free(ia); free(ja); free(a); free(b); free(x); free(y); free(b_y);

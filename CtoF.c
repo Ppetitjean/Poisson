@@ -60,28 +60,23 @@ void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
   int i,k,j,x,l,z;
   z = 0;
   for (i=0;i<n;i++){
-
-    
     for(k=ia[i];k<ia[i+1];k++){
       j = ja[k];
       x = j-i;
-      if (j>=i){
-      
-      /*printf("%i z ""\n",z);printf("%i x ""\n",x);printf("%i j ""\n",j);*/
-      fflush(stdout); 
-      abd[(x+i)*(kd+1) + (kd-x)] = a[k];
-      z++;}
+      if (j>=i){ 
+	abd[(x+i)*(kd+1) + (kd-x)] = a[k];
+      }
     }
   }
 }
 
-void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double *sol,int issym)*/
-{
-  int job,nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,labd,lnabd,lbdb,nrhs;
-  double *abd,*sol,t1,t2;
+void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x){
+  int nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,labd,lnabd,lbdb,nrhs;
+  double *abd,*sol,t3,t4;
   char uplo;
   printf("salut \n");
   fflush(stdout); 
+  /*find nabd : the number of uper bandes*/
   m1 = ia[0];
   m2 = ia[1];
   nabd = ja[m2-1]-ja[m1];
@@ -98,9 +93,11 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   csrbnd(n,a,ja,ia,abd,nabd);
   printf("coucou""\n");
   fflush(stdout); 
-  job = 1;
   lnabd = nabd + 1; labd =1;uplo = 'U';lbdb = n;nrhs=1;
   printf("coucou""\n");
+  t3 = mytimer();
   dpbsv_(&uplo,&n,&nabd,&nrhs,abd,&lnabd,x,&lbdb,&INFO);
+  t4 = mytimer();
+  printf("\nTemps de solution (CPU): %5.1f sec\n",t4-t3);
   printf("%i Info \n",INFO);
 }
