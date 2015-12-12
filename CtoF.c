@@ -69,16 +69,15 @@ void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
       
       /*printf("%i z ""\n",z);printf("%i x ""\n",x);printf("%i j ""\n",j);*/
       fflush(stdout); 
-      abd[x*n+j] = a[k];
+      abd[x+j*n] = a[k];
       z++;}
     }
   }
-  saveMatLinear(kd+1,n,abd);
 }
 
 void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double *sol,int issym)*/
 {
-  int job,nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,l,lnabd;
+  int job,nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,labd,lnabd,lbdb,nrhs;
   double *abd,*sol,t1,t2;
   char uplo;
   printf("salut \n");
@@ -100,13 +99,13 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x)/*double *b,double 
   fflush(stdout); 
   
   printf("%i ""coucou"" \n",nabd);
+  fflush(stdout); 
   csrbnd(n,a,ja,ia,abd,nabd);
   printf("coucou""\n");
+  fflush(stdout); 
   job = 1;
-  t1 = mytimer();
-  lnabd = nabd + 1; l =1;uplo = 'L';
+  lnabd = nabd + 1; labd =1;uplo = 'L';lbdb = n;nrhs=1;
   printf("coucou""\n");
-  dpbsv_(&uplo,&n,&nabd,&l,abd,&lnabd,x,&INFO);
-  t2 = mytimer();
-  printf("\nTemps de solution (CPU): %5.1f sec\n",t2-t1);
+  dpbsv_(&uplo,&n,&nabd,&nrhs,abd,&lnabd,x,&lbdb,&INFO);
+  printf("%i \n",INFO);
 }
