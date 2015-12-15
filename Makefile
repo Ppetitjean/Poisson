@@ -17,7 +17,7 @@ clean:
 	rm *.o 
 	rm main
 
-main: main.o prob.o time.o  umfpack.o issym.o normvec2.o amux.o vect_vect.o CtoF.o agmg.o AGMG/SRC/dagmg.o AGMG/SRC/dagmg_mumps.o
+main: main.o prob.o time.o  umfpack.o issym.o normvec2.o amux.o copuvect.o vect_vect.o CtoF.o agmg.o AGMG/SRC/dagmg.o AGMG/SRC/dagmg_mumps.o
 	cc $(COPT) $^ -o $@ $(LIB)
 	
 umfpack.o: umfpack.c
