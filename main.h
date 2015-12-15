@@ -2,6 +2,8 @@
   double mytimer(void);
   int solve_umfpack(int n, int *ja, int *ia, double *a, double *b, double *x);
   int issym(int nx,int n,double *a,int *ja,int *ia);
+  void copy(int n,double *x,double *y);
+  void copyint(int n,int *x,int *y);
   double amux (int n,double *x,double *y, double *a,int *ja,int *ia);
   double normvec2(int nx ,double *x);
   void vect_vect(int n, double *a, double *b,double *result);

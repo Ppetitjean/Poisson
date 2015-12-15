@@ -71,21 +71,10 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x){
   m1 = ia[0];
   m2 = ia[1];
   nabd = ja[m2-1]-ja[m1];
-  printf("%i ja[m2-1] ""\n",ja[m2-1] );
-  printf("%i ja[m1] ""\n",ja[m1] );
-  printf("%i nabd ""\n",nabd );
-  printf("%i n ""\n",n );
   abd = calloc(((nabd+1)*n),sizeof(double));
-  printf("hello \n");
-  fflush(stdout); 
-  
-  printf("%i ""coucou"" \n",nabd);
   fflush(stdout); 
   csrbnd(n,a,ja,ia,abd,nabd);
-  printf("coucou""\n");
-  fflush(stdout); 
   lnabd = nabd + 1; labd =1;uplo = 'U';lbdb = n;nrhs=1;
-  printf("coucou""\n");
   clock_t now = clock();
   dpbsv_(&uplo,&n,&nabd,&nrhs,abd,&lnabd,x,&lbdb,&INFO);
   clock_t later = clock();
