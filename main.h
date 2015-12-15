@@ -6,4 +6,5 @@
   double normvec2(int nx ,double *x);
   void vect_vect(int n, double *a, double *b,double *result);
   void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *b);
+  void agmgc(int n,int nnz, double *a,int *ja,int *ia ,double *b,double *x);
 //   void plot(int sizemat, double *a, int *ja,int *ia);

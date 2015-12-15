@@ -1,3 +1,4 @@
+/* les modifications sont marquées avec "<--" */
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -37,9 +38,10 @@ int prob(int nx, int *n, int **ia, int **ja, double **a, double **b)
 
 */
 {
-    int  nnz, ix, iy, ind,h;
+    int  nnz, ix, iy, ind;
     double xx, yy;
-    h = 1/(nx-1);
+
+    double h = 1.0/(nx-1); /* <-- */
     nx -= 2; /* noeuds sur la frontière Dirichlet ne sont pas pris en compte */
     *n  = nx * nx; /* nombre d'inconnues */
     nnz = 5 * nx * nx - 4 * nx; /* nombre d'éléments non nuls */
@@ -61,8 +63,7 @@ int prob(int nx, int *n, int **ia, int **ja, double **a, double **b)
 
     for (iy = 0; iy < nx; iy++) {
         for (ix = 0; ix < nx; ix++) {
-            /* numéro de l'éauqtion */
-	    /*double h = 1/(nx-1);*/
+            /* numéro de l'équation */
             ind = ix + nx * iy;
 
             /* marquer le début de la ligne suivante dans le tableau 'ia' */
@@ -71,7 +72,7 @@ int prob(int nx, int *n, int **ia, int **ja, double **a, double **b)
             /* calculer le membre de droite */
             xx = (ix+1.0)/(nx+1.0); xx = xx*xx;
             yy = (iy+1.0)/(nx+1.0); xx = yy*yy;
-            (*b)[ind] = sin(xx+yy);
+            (*b)[ind] = (h*h)*sin(xx+yy); /* <-- */
 
             /* replissage de la ligne : voisin inférieur */
             if (iy > 0)  {
@@ -110,8 +111,7 @@ int prob(int nx, int *n, int **ia, int **ja, double **a, double **b)
 
     /* dernier élément du tableau 'ia' */
     (*ia)[ind + 1] = nnz;
-    printf("%i""\n",ind);
 
     /* retour de fonction habituel */
-    return nnz;
+    return 0;
 }

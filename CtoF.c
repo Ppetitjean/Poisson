@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void printMat(int nbligne,int nbcol,double **x){
   int j,i;
@@ -44,16 +45,6 @@ void saveMatLinear(int L, int C, double* x) {
     fclose(f);
 }
 
-void ACtoAF(int n,int nnz, double *a,int *ja,int *ia){
-  int i,j;
-  for (i = 1;i<nnz;i++){
-    ja[i] = ja[i]+1;
-  }
-  for (j=0;j<n+1;j++){
-    ia[j]=ia[j]+1;
-  }
-}
-
 void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
 
 //  first determine ml and mu.
@@ -72,7 +63,7 @@ void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
 
 void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x){
   int nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,labd,lnabd,lbdb,nrhs;
-  double *abd,*sol,t3,t4;
+  double *abd,*sol,t3,t4,diff;
   char uplo;
   printf("salut \n");
   fflush(stdout); 
@@ -95,9 +86,10 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x){
   fflush(stdout); 
   lnabd = nabd + 1; labd =1;uplo = 'U';lbdb = n;nrhs=1;
   printf("coucou""\n");
-  t3 = mytimer();
+  clock_t now = clock();
   dpbsv_(&uplo,&n,&nabd,&nrhs,abd,&lnabd,x,&lbdb,&INFO);
-  t4 = mytimer();
-  printf("\nTemps de solution (CPU): %5.1f sec\n",t4-t3);
+  clock_t later = clock();
+  diff = (((float)later - (float) now)/CLOCKS_PER_SEC);
+  printf("\nTemps de solution (CPU): %5.1f sec\n",diff);
   printf("%i Info \n",INFO);
 }
