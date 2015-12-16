@@ -65,14 +65,11 @@ void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x){
   int nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,labd,lnabd,lbdb,nrhs;
   double *abd,*sol,t3,t4,diff;
   char uplo;
-  printf("salut \n");
-  fflush(stdout); 
   /*find nabd : the number of uper bandes*/
   m1 = ia[0];
   m2 = ia[1];
   nabd = ja[m2-1]-ja[m1];
   abd = calloc(((nabd+1)*n),sizeof(double));
-  fflush(stdout); 
   csrbnd(n,a,ja,ia,abd,nabd);
   lnabd = nabd + 1; labd =1;uplo = 'U';lbdb = n;nrhs=1;
   clock_t now = clock();

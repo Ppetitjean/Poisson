@@ -7,8 +7,8 @@ void plot(int sizemat, int n,double *x){
   double **u,nx,h;
   nx = sizemat;
   h = 1/(nx-1);
-  char * commandsForGnuplot[] = {"set title \"graph solution\"","set size square","set pm3d map","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
-  char * commandsForGnuplot2[] = {"set title \"graph solution\"","set pm3d","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
+  char * commandsForGnuplot[] = {"nx = 100","set title \"graph solution\"","set size square","set pm3d map","set palette rgbformulae 22,13,-31","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)", "splot 'file.txt' matrix with pm3d"};
+  char * commandsForGnuplot2[] = {"nx = 100","set title \"graph solution\"","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set pm3d","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
   
   /*definting of u*/
   u = (double**) malloc(sizemat*sizeof(double*));
@@ -49,12 +49,12 @@ void plot(int sizemat, int n,double *x){
      * que le programme C terminer
      */
   FILE * gnuplotPipe = popen ("gnuplot -persistent", "w");
-   for (i=0; i < 5; i++)
+   for (i=0; i < 8; i++)
     {
     fprintf(gnuplotPipe, "%s \n", commandsForGnuplot[i]); //envoie les commandes a gnuplot une par une.
     }
   FILE * gnuplotPipe2 = popen ("gnuplot -persistent", "w");
-    for (i=0; i < 4; i++)
+    for (i=0; i < 7; i++)
     {
     fprintf(gnuplotPipe2, "%s \n", commandsForGnuplot2[i]); //envoie les commandes a gnuplot une par une.
     }
@@ -63,7 +63,7 @@ void plot(int sizemat, int n,double *x){
 
 int main(int argc, char *argv[]){
   /* déclarer les variables */
-  int nx =200;
+  int nx =100;
   int i,n,nzz,sym, *ia, *ja,*japrim,*iaprim; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y,*x1,d,*bprim,*b_yprim;
   double residu; 
@@ -124,10 +124,6 @@ int main(int argc, char *argv[]){
   copyint(nzz,ja,japrim);
   copyint(n+1,ia,iaprim);
   agmgc(n,nzz,a,ja,ia ,b,x1);
-  plot(nx,n,x1);
-  
-
-
   /* libérér la mémoire */
   free(ia); free(ja); free(a); free(b); free(x); free(y); free(b_y);free(x1);
 return 0;
