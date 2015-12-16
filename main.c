@@ -58,7 +58,7 @@ void plot(int sizemat, int n,double *x){
     {
     fprintf(gnuplotPipe2, "%s \n", commandsForGnuplot2[i]); //envoie les commandes a gnuplot une par une.
     }
-  
+  free(u);
 }
 
 int main(int argc, char *argv[]){
