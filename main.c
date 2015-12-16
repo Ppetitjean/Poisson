@@ -7,8 +7,8 @@ void plot(int sizemat, int n,double *x){
   double **u,nx,h;
   nx = sizemat;
   h = 1/(nx-1);
-  char * commandsForGnuplot[] = {"nx = 500","set title \"graph solution\"","set size square","set pm3d map","set palette rgbformulae 22,13,-31","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)", "splot 'file.txt' matrix with pm3d"};
-  char * commandsForGnuplot2[] = {"nx = 500","set title \"graph solution\"","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set pm3d","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
+  char * commandsForGnuplot[] = {"nx = 1000","set title \"graph solution\"","set size square","set pm3d map","set palette rgbformulae 22,13,-31","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)", "splot 'file.txt' matrix with pm3d"};
+  char * commandsForGnuplot2[] = {"nx = 1000","set title \"graph solution\"","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set pm3d","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
   
   /*definting of u*/
   u = (double**) malloc(sizemat*sizeof(double*));
@@ -63,7 +63,7 @@ void plot(int sizemat, int n,double *x){
 
 int main(int argc, char *argv[]){
   /* déclarer les variables */
-  int nx =500;
+  int nx =1000;
   int i,n,nzz,sym, *ia, *ja,*japrim,*iaprim; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y,*x1,d,*bprim,*b_yprim;
   double residu; 
