@@ -7,8 +7,8 @@ void plot(int sizemat, int n,double *x){
   double **u,nx,h;
   nx = sizemat;
   h = 1/(nx-1);
-  char * commandsForGnuplot[] = {"nx = 1000","set title \"graph solution\"","set size square","set pm3d map","set palette rgbformulae 22,13,-31","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)", "splot 'file.txt' matrix with pm3d"};
-  char * commandsForGnuplot2[] = {"nx = 1000","set title \"graph solution\"","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set pm3d","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
+  char * commandsForGnuplot[] = {"nx = 100","set title \"graph solution\"","set size square","set pm3d map","set palette rgbformulae 22,13,-31","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)", "splot 'file.txt' matrix with pm3d"};
+  char * commandsForGnuplot2[] = {"nx = 100","set title \"graph solution\"","set ytics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set xtics (\"0\"0,\"1/2\"nx/2,\"1\"nx)","set pm3d","set palette rgbformulae 22,13,-31", "splot 'file.txt' matrix with pm3d"};
   
   /*definting of u*/
   u = (double**) malloc(sizemat*sizeof(double*));
@@ -20,13 +20,13 @@ void plot(int sizemat, int n,double *x){
       u[i][c] = 0.0;
     }
   }
-  j =n-1;
+  j =0;
 
   /*change les valeurs hors des frontières*/
-  for (i=1;i<sizemat-1;i++){
+  for (i=sizemat-1;i>1;i--){
     for (k=1;k<sizemat-1;k++){
       u[i][k] = x[j];
-      j = j-1;
+      j = j+1;
     }
   }
   /*chargement des donnes dans un fichier*/
@@ -63,8 +63,8 @@ void plot(int sizemat, int n,double *x){
 
 int main(int argc, char *argv[]){
   /* déclarer les variables */
-  int nx =750;
-  int i,n,nzz,sym, *ia, *ja,*japrim,*iaprim; 
+  int nx =100;
+  int i,n,nzz,sym, *ia, *ja; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y,*x1,d,*bprim,*b_yprim;
   double residu; 
   double t1, t2,t3,t4;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]){
   printf("%e residu \n",residu);
   copy(n,b,bprim);
   plot(nx,n,x);
-  /*resolution en utilisant dpbsv*/
+  /*resolution en utilisant DPBSV*/
   CtoF(n,nzz,a,ja,ia,bprim);
   amux(n,bprim,y,a,ja,ia);
   vect_vect(n,b,y,b_y);
