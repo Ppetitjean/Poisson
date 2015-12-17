@@ -1,6 +1,7 @@
 #include <math.h>
 
 double normvec2(int nx ,double *x){
+  /*calcul la norme euclidienne d'un vecteur x de taille nx*/
   int i ;
   double norm,t;
   t = 0;

@@ -46,10 +46,8 @@ void saveMatLinear(int L, int C, double* x) {
 }
 
 void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
-
-//  first determine ml and mu.
-  int i,k,j,x,l,z;
-  z = 0;
+  /*convertir une matrice symétrique en format bande supérieur*/
+  int i,k,j,x;
   for (i=0;i<n;i++){
     for(k=ia[i];k<ia[i+1];k++){
       j = ja[k];
@@ -62,10 +60,10 @@ void csrbnd (int n,double *a,int *ja,int *ia,double *abd,int kd){
 }
 
 void CtoF(int n,int nnz, double *a,int *ja,int *ia,double *x){
-  int nabd,lowd,mu,ml,ierr,i,k,INFO,m1,m2,j,labd,lnabd,lbdb,nrhs;
-  double *abd,*sol,t3,t4,diff;
+  /*repure la mtrice en format CSR et utilise dpbsv_ pour résoudre le systeme linéaire*/
+  int nabd,i,k,INFO,m1,m2,j,labd,lnabd,lbdb,nrhs;
+  double *abd,diff;
   char uplo;
-  /*find nabd : the number of uper bandes*/
   m1 = ia[0];
   m2 = ia[1];
   nabd = ja[m2-1]-ja[m1];

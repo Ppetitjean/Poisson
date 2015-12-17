@@ -22,14 +22,14 @@ void plot(int sizemat, int n,double *x){
   }
   j =n-1;
 
-  /*changing value not on the frontier*/
+  /*change les valeurs hors des frontières*/
   for (i=1;i<sizemat-1;i++){
     for (k=1;k<sizemat-1;k++){
       u[i][k] = x[j];
       j = j-1;
     }
   }
-  /*loading data in the file*/
+  /*chargement des donnes dans un fichier*/
   FILE *f = fopen("file.txt", "w+");
   if (f == NULL)
   {
@@ -63,7 +63,7 @@ void plot(int sizemat, int n,double *x){
 
 int main(int argc, char *argv[]){
   /* déclarer les variables */
-  int nx =1000;
+  int nx =750;
   int i,n,nzz,sym, *ia, *ja,*japrim,*iaprim; 
   double *a, *b, *x, *y, normx, normf,normb_y,*b_y,*x1,d,*bprim,*b_yprim;
   double residu; 
@@ -101,6 +101,7 @@ int main(int argc, char *argv[]){
   b_y = malloc(sizeof(double)*n);
   b_yprim = malloc(sizeof(double)*n);
   bprim = malloc(sizeof(double)*n);
+  /*calcul du résidu*/
   double z,v,ye;
   amux(n,x,y,a,ja,ia);
   vect_vect(n,b,y,b_y);
@@ -110,8 +111,8 @@ int main(int argc, char *argv[]){
   residu = z/v;
   printf("%e residu \n",residu);
   copy(n,b,bprim);
-//   printf("%e residu ""\n",residu);
   plot(nx,n,x);
+  /*resolution en utilisant dpbsv*/
   CtoF(n,nzz,a,ja,ia,bprim);
   amux(n,bprim,y,a,ja,ia);
   vect_vect(n,b,y,b_y);
@@ -119,10 +120,7 @@ int main(int argc, char *argv[]){
   v = normvec2(n,b);
   residu = z/v;
   printf("%e residu2 \n",residu);
-  japrim = malloc(nzz * sizeof(int));
-  iaprim = malloc((n+1) * sizeof(int));
-  copyint(nzz,ja,japrim);
-  copyint(n+1,ia,iaprim);
+  /*resolution en utilisant DAGMG*/
   agmgc(n,nzz,a,ja,ia ,b,x1);
   /* libérér la mémoire */
   free(ia); free(ja); free(a); free(b); free(x); free(y); free(b_y);free(x1);

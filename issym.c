@@ -3,32 +3,30 @@
 
 
 void trans(int n,int ipos, double *a,int *ja,int *ia, double *b, int *ib, int *jb) {
-
-    // compute pointers from lengths
+/*calcul la transposée d'une matrice en format csr*/
     int i,k,j;
     int next = 0;
-    //compute lengths of rows of transp(A)
+    //calcul la longeur des colone des la transposée de A
     for(i = 0; i< n;i++){
          for (k=ia[i];k < ia[i+1];k++){
             j = ja[k]+1;
             ib[j] = ib[j]+1;
          } 
       }
-      ib[0] = ipos;
-      for (i=0;i<n;i++){
+    ib[0] = ipos;
+    for (i=0;i<n;i++){
          ib[i+1] = ib[i] + ib[i+1];
          }
-      for (i=0;i<n;i++){
-         for (k=ia[i];k<ia[i+1];k++){
-            j = ja[k] ;
+    for (i=0;i<n;i++){
+       for (k=ia[i];k<ia[i+1];k++){
+	    j = ja[k] ;
             next = ib[j];
 	    b[next] = a[k];
 	    jb[next] = i;
-            ib[j] = next+1;           
-	 }
-
-     }
-// reshift ib and leave 
+            ib[j] = next+1;
+       }
+    }
+    /*remet les ib dans le bonne ordre*/
       for (i=(n-1);i>=0;i--){
          ib[i+1] = ib[i];
       }
@@ -37,6 +35,7 @@ void trans(int n,int ipos, double *a,int *ja,int *ia, double *b, int *ib, int *j
 
 
 int issym(int nx,int n,double *a,int *ja,int *ia){
+  /*vérifie si la matrice A est bien symétrique revie 0 si elle l'est 1 dans le cas contraire*/
   int i,ipos;
   double *atrans = malloc(sizeof(double) * (nx));
   int *iatrans = malloc(sizeof(int) * (n+1));
