@@ -114,6 +114,7 @@ int main(int argc, char *argv[]){
   plot(nx,n,x);
   /*resolution en utilisant DPBSV*/
   CtoF(n,nzz,a,ja,ia,bprim);
+    /*calcul du résidu pour DPBSV*/
   amux(n,bprim,y,a,ja,ia);
   vect_vect(n,b,y,b_y);
   z = normvec2(n,b_y);
